@@ -13,68 +13,16 @@ const pixelFilePath = path.join(__dirname, 'pixel.png');
 
 let dataFromMail = "";
 
-async function getIpLocation( ipAddress) {
-    try {
-        const apiKey = '18577af5b67323'; // Remplacez par votre clé API IPinfo
-
-        const apiUrl = `https://ipinfo.io/${ipAddress}/json?token=${apiKey}`;
-
-        const response = await fetch(apiUrl);
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Emplacement de l\'adresse IP', ipAddress, ':');
-            console.log('IP :', data.ip);
-            console.log('Ville :', data.city);
-            console.log('Région :', data.region);
-            console.log('Pays :', data.country);
-            console.log('Code postal :', data.postal);
-            console.log('Coordonnées géographiques :', data.loc);
-            return data;
-        } else {
-            console.error('La demande a échoué avec le statut', response.status);
-            return "Failed to fetch IP info"
-        }
-    } catch (error) {
-        console.error('Une erreur s\'est produite :', error);
-    }
-}
-
 app.get('/', async (req, res) => {
     try {
-        // Log the User-Agent String.
-        const user_agent = req.headers['user-agent'];
-
-        // Get the current time of request and format time into a readable format.
-        const current_time = new Date();
-        const timestamp = current_time.toISOString().slice(0, 19).replace('T', ' ');
-
-        // Get the IP address of the requester from x-forwarded-for header
-        const get_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
-        // Get the user agent
-        const userAgent = req.headers['user-agent'];
-
-        console.log("request: ", req)
-
-        const ipInfo = await getIpLocation(get_ip);
-
-        // Update the data variable
-        dataFromMail = {ipInfo, userAgent};
-
-        // Send the pixel
-        res.sendFile(pixelFilePath);
-
+        res.send("Hello world!");
     } catch (error) {
         console.error('Une erreur s\'est produite :', error);
     }
-});
-
-app.get('/dataFromMail', (req, res) => {
-    res.send(dataFromMail);
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Le serveur a démarré sur le port ${port}`);
 });
 
 // Export the Express API
